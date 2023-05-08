@@ -7,3 +7,5 @@ function Card(props) {
 }
 
 export default Card;
+
+//making custom html component called card
