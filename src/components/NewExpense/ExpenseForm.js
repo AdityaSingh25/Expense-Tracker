@@ -1,6 +1,6 @@
 import "./ExpenseForm.css";
 import { useState } from "react";
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -49,7 +49,7 @@ const ExpenseForm = () => {
       amount: enteredAmount,
       date: new Date(enteredDate),
     };
-    console.log(expenseData);
+    //console.log(expenseData);
     //now we want that after clicking on the submit button we will clear the form
     setEnteredTitle("");
     setEnteredAmount("");
@@ -59,6 +59,8 @@ const ExpenseForm = () => {
     // because it allows you to gather user input,
     // but then also change it.
     // For example, upon form of mission.
+
+    props.onSaveExpenseData(expenseData);
   };
   return (
     <form onSubmit={submitHandler}>
