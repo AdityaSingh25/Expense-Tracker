@@ -1,13 +1,16 @@
-import {useState} from 'react';
+import { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
 import Card from "../UI/Card";
 import "./Expenses.css";
 import ExpensesFilter from "./ExpensesFilter";
 function Expenses(props) {
-  const [filteredYear,setFilteredYear] = useState('2020')
+  const [filteredYear, setFilteredYear] = useState("2020");
   const filterChangeHandler = (selectedYear) => {
-    setFilteredYear(selectedYear)
+    setFilteredYear(selectedYear);
   }
+  const filteredExpenses = props.items.filter(expense=>{
+    return expense.date.getFullYear().toString()===filteredYear;
+  })
   //state really is seperated on a per component instance basis
   //we call expenseItem 4 times therefore four instaces of state will be created
 
@@ -27,34 +30,22 @@ function Expenses(props) {
   // because we click a button in this case it's only this component function
   // and only that specific instance where this component is being used where
   // React will re-evaluate it.
+  console.log();
   return (
-    
-      
-      <Card className="expenses">
-      <ExpensesFilter selected={filteredYear} onChangeFilter={filterChangeHandler} />
+    <Card className="expenses">
+      <ExpensesFilter
+        selected={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+      {filteredExpenses.map((expense) => (
         <ExpenseItem
-          title={props.items[0].title}
-          amount={props.items[0].amount}
-          date={props.items[0].date}
+          key={expense.id}
+          title={expense.title}
+          amount={expense.amount}
+          date={expense.date}
         />
-
-        <ExpenseItem
-          title={props.items[1].title}
-          amount={props.items[1].amount}
-          date={props.items[1].date}
-        />
-        <ExpenseItem
-          title={props.items[2].title}
-          amount={props.items[2].amount}
-          date={props.items[2].date}
-        />
-        <ExpenseItem
-          title={props.items[3].title}
-          amount={props.items[3].amount}
-          date={props.items[3].date}
-        />
-      </Card>
-    
+      ))}
+    </Card>
   );
 }
 
