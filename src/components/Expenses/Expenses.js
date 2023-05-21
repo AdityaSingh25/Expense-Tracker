@@ -1,16 +1,19 @@
 import { useState } from "react";
-import ExpenseItem from "./ExpenseItem";
+import ExpensesList from "./ExpensesList";
 import Card from "../UI/Card";
 import "./Expenses.css";
 import ExpensesFilter from "./ExpensesFilter";
+import ExpenseChart from "./ExpensesChart"
+
+
 function Expenses(props) {
   const [filteredYear, setFilteredYear] = useState("2020");
   const filterChangeHandler = (selectedYear) => {
     setFilteredYear(selectedYear);
-  }
-  const filteredExpenses = props.items.filter(expense=>{
-    return expense.date.getFullYear().toString()===filteredYear;
-  })
+  };
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
   //state really is seperated on a per component instance basis
   //we call expenseItem 4 times therefore four instaces of state will be created
 
@@ -37,16 +40,51 @@ function Expenses(props) {
         selected={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
-      {filteredExpenses.map((expense) => (
+      <ExpenseChart expenses={filteredExpenses}/>
+      <ExpensesList items={filteredExpenses}/>
+      {/* {filteredExpenses.length === 0 ?<p style={{color:"white"}}>No Expense Found</p> : filteredExpenses.map((expense) => (
         <ExpenseItem
           key={expense.id}
           title={expense.title}
           amount={expense.amount}
           date={expense.date}
         />
-      ))}
+      ))} */}
+      {/* using this & trick here,where the part after & is rendered if the part before & returns true. */}
+      {/* {filteredExpenses.length === 0 && (
+        <p style={{ color: "white" }}>No expense found</p>
+      )}
+      {filteredExpenses.length > 0 &&
+        filteredExpenses.map((expense) => (
+          <ExpenseItem
+            key={expense.key}
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        ))} */}
+
     </Card>
   );
 }
 
 export default Expenses;
+
+
+// one more approach for this is above the return 
+//we can write
+// let expensesContent = <p> No expenses found </p>
+//if (filteredExpenses.length > 0){
+      // expensesContent = filteredExpenses.map((expense)=>{
+      //   <ExpenseItem
+      //       key={expense.key}
+      //       title={expense.title}
+      //       amount={expense.amount}
+      //       date={expense.date}
+      //     />
+      // });
+//}
+
+// and now inside return we can simply call {expensesContent}
+
+//this looks much cleaner
